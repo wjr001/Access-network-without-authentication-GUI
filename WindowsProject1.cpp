@@ -92,6 +92,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
+
+
+    //Create Button
     HWND hwndButton = CreateWindow(
         L"BUTTON",  // Predefined class; Unicode assumed 
         L"O",      // Button text 
@@ -109,6 +112,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
     
+
+
+    //Create icon at taskbar
     NOTIFYICONDATA nid = {};
     nid.cbSize = (DWORD)sizeof(NOTIFYICONDATA);
     nid.hWnd = hwnd;
@@ -123,9 +129,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         &nid.hIcon
     );
     */
-
-
-
     Shell_NotifyIcon(NIM_ADD, &nid);
     
 
