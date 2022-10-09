@@ -32,6 +32,12 @@
     <ClCompile Include="WindowsProject1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Http.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CALLBACK_WindowProc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc">
