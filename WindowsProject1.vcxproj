@@ -138,7 +138,7 @@
     <ClInclude Include="WindowsProject1.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WindowsProject1.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Http.cpp" />
     <ClCompile Include="CALLBACK_WindowProc.cpp" />
   </ItemGroup>

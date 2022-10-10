@@ -5,6 +5,7 @@
 #include "WindowsProject1.h"
 #include "shellapi.h"
 #include "commctrl.h"
+#include <iostream>
 #pragma comment(lib, "Comctl32.lib")
 //#pragma comment(lib, "User32.lib")
 //#pragma comment(lib, "Shell32.lib")
@@ -15,6 +16,9 @@
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool HttpGetReq();
+bool Exit_Thread = true;
+
+
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -27,7 +31,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     MyWindows.hInstance = hInstance;
     MyWindows.lpszClassName = CLASS_NAME;
     RegisterClass(&MyWindows);
-
+    
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
@@ -35,7 +39,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX | WS_MAXIMIZEBOX,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 500, 200,
+        CW_USEDEFAULT, CW_USEDEFAULT, 500, 120,
 
         NULL,       // Parent window    
         NULL,       // Menu
@@ -47,12 +51,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
-
-
     //Create Button
     HWND hwndButton = CreateWindow(
         L"BUTTON",  // Predefined class; Unicode assumed 
-        L"O",      // Button text 
+        L"启动",      // Button text 
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
         10,         // x position 
         10,         // y position 
@@ -67,8 +69,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
     
-
-
+    
     //Create icon at taskbar
     NOTIFYICONDATA nid = {};
     nid.cbSize = (DWORD)sizeof(NOTIFYICONDATA);

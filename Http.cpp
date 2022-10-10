@@ -5,9 +5,9 @@
 #include <string>
 #include <sstream>
 using namespace std;
+#include "WindowsProject1.h"
 #pragma comment(lib,"ws2_32.lib")
 #pragma warning(disable : 4996)
-
 
 bool HttpGetReq()
 {
@@ -91,4 +91,9 @@ bool HttpGetReq()
     closesocket(m_socket);
     WSACleanup();
     return true;
+}
+
+void send_req()
+{
+    
 }
