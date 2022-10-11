@@ -48,6 +48,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     MyWindows.lpfnWndProc = WindowProc;
     MyWindows.hInstance = hInstance;
     MyWindows.lpszClassName = CLASS_NAME;
+    MyWindows.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINDOWSPROJECT1));
     RegisterClass(&MyWindows);
     
     hwnd = CreateWindowEx(
@@ -57,7 +58,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX | WS_MAXIMIZEBOX,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 500, 120,
+        CW_USEDEFAULT, CW_USEDEFAULT, 360, 120,
 
         NULL,       // Parent window    
         NULL,       // Menu
