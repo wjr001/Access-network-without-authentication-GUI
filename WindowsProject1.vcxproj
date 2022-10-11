@@ -45,7 +45,8 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
-    <VCToolsVersion>14.33.31629</VCToolsVersion>
+    <VCToolsVersion>
+    </VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -138,6 +139,8 @@
     <ClInclude Include="WindowsProject1.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CharToLPCWSTR.cpp" />
+    <ClCompile Include="LoadSet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Http.cpp" />
     <ClCompile Include="CALLBACK_WindowProc.cpp" />

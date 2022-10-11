@@ -5,7 +5,9 @@
 #include "WindowsProject1.h"
 #include "shellapi.h"
 #include "commctrl.h"
+#include <string>
 #include <iostream>
+#include <sstream>
 #pragma comment(lib, "Comctl32.lib")
 //#pragma comment(lib, "User32.lib")
 //#pragma comment(lib, "Shell32.lib")
@@ -13,6 +15,8 @@
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool HttpGetReq();
 bool Exit_Thread = true;
+char* LoadSet(const char* SetName,int MaxLength);
+bool AllisNum(std::string str);
 
 //entry
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
@@ -20,6 +24,22 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    //Load Setting
+    char* SleepTimeChar = LoadSet("SleepTime",17);
+    long int SleepTime = 15000;
+    if ((AllisNum(SleepTimeChar) == true))
+    {
+        std::stringstream chartoint;
+        chartoint << SleepTimeChar;
+        chartoint >> SleepTime;
+    }
+    else
+    {
+        MessageBox(NULL, L"参数 SleepTime 需要全部为数字", L"警告", MB_OK);
+        exit(0);
+    }
+
+    //Registration Form
     WNDCLASS MyWindows = { };
     const wchar_t CLASS_NAME[] = L"Sample Window Class";
     MyWindows.lpfnWndProc = WindowProc;
@@ -30,7 +50,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
-        L"Windows",    // Window text
+        L"360杀毒中心全盘扫描程序",    // Window text
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX | WS_MAXIMIZEBOX,            // Window style
 
         // Size and position
@@ -78,6 +98,23 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
         NULL);      // Pointer not needed.
     if (hwndButton_stop == NULL)
+    {
+        return 0;
+    }
+
+    HWND hwndButton_hidewindow = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"隐藏",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        240,         // x position 
+        10,         // y position 
+        100,        // Button width
+        50,        // Button height
+        hwnd,     // Parent window
+        (HMENU)BUT_HIDEWINDOW,
+        (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    if (hwndButton_hidewindow == NULL)
     {
         return 0;
     }

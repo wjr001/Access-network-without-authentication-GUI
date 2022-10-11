@@ -9,6 +9,7 @@
 using namespace std;
 
 DWORD WINAPI send_req(LPVOID lpParam);
+
 bool ThreadStart = false;
 DWORD dwThread;
 HANDLE hThread;
@@ -23,8 +24,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 case BUT_START:
                 {
-                    //network = thread(send_req);
-                    //ShowWindow(hwnd, SW_HIDE);
                     if (!ThreadStart)
                     {
                         CreateThread(
@@ -39,25 +38,36 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     }
                     else
                     {
-                        MessageBox(hwnd, L"线程已启动", L"注意", MB_OK);
+                        MessageBox(hwnd, L"扫描已启动", L"请注意!", MB_OK);
                     }
                     return 0;
                 }
                 case BUT_STOP: 
                 {
-                    Exit_Thread = true;
-                    WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
-                    CloseHandle(hThread);
-                    ThreadStart = false;
+                    if (ThreadStart)
+                    {
+                        Exit_Thread = true;
+                        WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
+                        CloseHandle(hThread);
+                        ThreadStart = false;
+                    }
+                    return 0;
+                }
+                case BUT_HIDEWINDOW:
+                {
+                    ShowWindow(hwnd, SW_HIDE);
                     return 0;
                 }
             }
         }
         case WM_DESTROY:
         {
-            Exit_Thread = true;
-            WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
-            CloseHandle(hThread);
+            if (ThreadStart)
+            {
+                Exit_Thread = true;
+                WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
+                CloseHandle(hThread);
+            }
             PostQuitMessage(0);
             return 0;
         }
@@ -79,11 +89,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 case WM_LBUTTONDOWN:
                 {
-                    MessageBox(hwnd, L"Are you sure?", L"Cation", MB_OK);
-                    while (true)
-                    {
-                        Sleep(1000);
-                    }
+                    ShowWindow(hwnd, SW_SHOW);
                     return 0;
                 }
                 case WM_RBUTTONDOWN:

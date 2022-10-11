@@ -11,13 +11,15 @@ using namespace std;
 
 bool HttpGetReq()
 {
+    ofstream erro_log;
+    erro_log.open("erro.log", ios::out);
     //1.初始化套接字库
     WORD socket_version = MAKEWORD(2, 2); //套接字版本
     WSADATA wsaData;
     int flag_init_socket = WSAStartup(socket_version, &wsaData);
     if (flag_init_socket != 0)
     {
-        cout << "初始化套接字失败" << endl;
+        erro_log << "初始化套接字失败" << endl;
         return false;
     }
 
@@ -32,7 +34,7 @@ bool HttpGetReq()
     //host_info为空 说明没有该消息
     if (host_info == nullptr)
     {
-        cout << "该主机url失败！" << endl;
+        erro_log << "该主机url失败！" << endl;
         return false;
     }
 
@@ -48,7 +50,7 @@ bool HttpGetReq()
     int flag_connect_socket = connect(m_socket, (SOCKADDR*)(&SockAddr), sizeof(SockAddr));
     if (flag_connect_socket != 0)
     {
-        cout << "connect to server fail!" << endl;
+        erro_log << "connect to server fail!" << endl;
         return false;
     }
 
@@ -66,7 +68,7 @@ bool HttpGetReq()
         while ((recvDataLength = recv(m_socket, recvBuffer, 10000, 0)) > 0)
         {
             ofstream temp;
-            temp.open("temp.temp", ios::out | ios::trunc);
+            temp.open("digest.log", ios::out | ios::trunc);
             temp << "传回的数据为:\n" << endl;
             int i = 0;
             while (recvBuffer[i] >= 32 || recvBuffer[i] == '\n' || recvBuffer[i] == '\r')
@@ -82,7 +84,7 @@ bool HttpGetReq()
     }
     else
     {
-        cout << "发送失败";
+        erro_log << "发送失败";
         closesocket(m_socket);
         WSACleanup();
         return false;
