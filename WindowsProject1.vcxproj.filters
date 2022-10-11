@@ -46,15 +46,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WindowsProject1.rc">
-      <Filter>资源文件</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
+    <Image Include="WindowsProject1.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="WindowsProject1.ico">
+    <Image Include="WindowsProject1.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

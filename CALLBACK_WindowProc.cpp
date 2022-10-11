@@ -9,6 +9,7 @@
 using namespace std;
 
 DWORD WINAPI send_req(LPVOID lpParam);
+LPCWSTR CharToLPCWSTR(char* input);
 
 bool ThreadStart = false;
 DWORD dwThread;
@@ -56,6 +57,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case BUT_HIDEWINDOW:
                 {
                     ShowWindow(hwnd, SW_HIDE);
+                    ModifyMenuA(hMenu, MEMU_HOD, MF_STRING, MEMU_HOD, LPCSTR("œ‘ æ"));
+                    DrawMenuBar(hwnd);
+                    hide = true;
                     return 0;
                 }
                 case MEMU_EXIT:
@@ -67,12 +71,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if (!hide)
                     {
-                        ModifyMenu(hMenu,MEMU_HOD, MF_STRING, MEMU_HOD , L"“˛≤ÿ");
+                        ModifyMenuA(hMenu,MEMU_HOD, MF_STRING, MEMU_HOD , LPCSTR("œ‘ æ"));
+                        ShowWindow(hwnd, SW_HIDE);
+                        hide = true;
                     }
                     else
                     {
-                        ModifyMenu(hMenu, MEMU_HOD, MF_STRING, MEMU_HOD, L"œ‘ æ");
+                        ModifyMenuA(hMenu, MEMU_HOD, MF_STRING, MEMU_HOD, LPCSTR("“˛≤ÿ"));
+                        ShowWindow(hwnd, SW_SHOW);
+                        hide = false;
                     }
+                    DrawMenuBar(hwnd);
                     return 0;
                 }
             }

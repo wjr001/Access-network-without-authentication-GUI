@@ -109,7 +109,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         L"BUTTON",  // Predefined class; Unicode assumed 
         L"隐藏",      // Button text 
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
-        240,         // x position 
+        230,         // x position 
         10,         // y position 
         100,        // Button width
         50,        // Button height
