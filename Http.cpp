@@ -100,7 +100,7 @@ DWORD WINAPI send_req(LPVOID lpParam)
     while (!Exit_Thread)
     {
         HttpGetReq();
-        Sleep(10000);
+        Sleep(SleepTime);
     }
     return 0;
 }

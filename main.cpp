@@ -17,6 +17,7 @@ bool HttpGetReq();
 bool Exit_Thread = true;
 char* LoadSet(const char* SetName,int MaxLength);
 bool AllisNum(std::string str);
+long int SleepTime = 15000;
 
 //entry
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
@@ -26,7 +27,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
 {
     //Load Setting
     char* SleepTimeChar = LoadSet("SleepTime",17);
-    long int SleepTime = 15000;
     if ((AllisNum(SleepTimeChar) == true))
     {
         std::stringstream chartoint;

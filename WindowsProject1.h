@@ -13,4 +13,5 @@
 #ifndef WindowsProject1
 #define WindowsProject1
 extern bool Exit_Thread;
+long int SleepTime;
 #endif
