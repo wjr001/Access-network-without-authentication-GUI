@@ -93,7 +93,12 @@ bool HttpGetReq()
     return true;
 }
 
-void send_req()
+DWORD WINAPI send_req(LPVOID lpParam)
 {
-    
+    while (!Exit_Thread)
+    {
+        HttpGetReq();
+        Sleep(10000);
+    }
+    return 0;
 }

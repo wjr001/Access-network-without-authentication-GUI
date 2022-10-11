@@ -10,16 +10,11 @@
 //#pragma comment(lib, "User32.lib")
 //#pragma comment(lib, "Shell32.lib")
 
-#define BUT1 3000
-#define ID_NID 2000
-#define ID_NID_CALLBACK 2001
-
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool HttpGetReq();
 bool Exit_Thread = true;
 
-
-
+//entry
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -52,7 +47,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     }
 
     //Create Button
-    HWND hwndButton = CreateWindow(
+    HWND hwndButton_start = CreateWindow(
         L"BUTTON",  // Predefined class; Unicode assumed 
         L"启动",      // Button text 
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
@@ -61,10 +56,28 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         100,        // Button width
         50,        // Button height
         hwnd,     // Parent window
-        (HMENU)BUT1,
+        (HMENU)BUT_START,
         (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
         NULL);      // Pointer not needed.
-    if (hwndButton == NULL)
+    if (hwndButton_start == NULL)
+    {
+        return 0;
+    }
+
+
+    HWND hwndButton_stop = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"停止",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        120,         // x position 
+        10,         // y position 
+        100,        // Button width
+        50,        // Button height
+        hwnd,     // Parent window
+        (HMENU)BUT_STOP,
+        (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    if (hwndButton_stop == NULL)
     {
         return 0;
     }

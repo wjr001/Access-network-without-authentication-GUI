@@ -5,11 +5,11 @@
 #pragma comment(lib, "Comctl32.lib")
 //#pragma comment(lib, "User32.lib")
 //#pragma comment(lib, "Shell32.lib")
+#include <thread>
+using namespace std;
 
-#define BUT1 3000
-#define ID_NID 2000
-#define ID_NID_CALLBACK 2001
-
+void send_req();
+thread network;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -19,16 +19,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             switch (LOWORD(wParam))
             {
-                case BUT1:
+                case BUT_START:
                 {
-                    MessageBox(hwnd, L"Are you sure?", L"Cation", IDOK);
-                    ShowWindow(hwnd, SW_HIDE);
+                    //network = thread(send_req);
+                    //ShowWindow(hwnd, SW_HIDE);
+                    return 0;
+                }
+                case BUT_STOP: 
+                {
+                    Exit_Thread = true;
+                    //network.join();
+                    PostQuitMessage(0);
                     return 0;
                 }
             }
         }
         case WM_DESTROY:
         {
+            Exit_Thread = true;
+            network.join();
             PostQuitMessage(0);
             return 0;
         }
