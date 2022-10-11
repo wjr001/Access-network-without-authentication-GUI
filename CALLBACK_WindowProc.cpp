@@ -58,6 +58,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     ShowWindow(hwnd, SW_HIDE);
                     return 0;
                 }
+                case MEMU_EXIT:
+                {
+                    PostQuitMessage(0);
+                    return 0;
+                }
+                case MEMU_HOD:
+                {
+                    if (!hide)
+                    {
+                        ModifyMenu(hMenu,MEMU_HOD, MF_STRING, MEMU_HOD , L"隐藏");
+                    }
+                    else
+                    {
+                        ModifyMenu(hMenu, MEMU_HOD, MF_STRING, MEMU_HOD, L"显示");
+                    }
+                    return 0;
+                }
             }
         }
         case WM_DESTROY:
@@ -89,7 +106,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 case WM_LBUTTONDOWN:
                 {
-                    ShowWindow(hwnd, SW_SHOW);
+                    CONSOLE_CURSOR_INFO info = { 1, 0 };				//创建光标的属性结构体
+                    HANDLE hand = GetStdHandle(STD_OUTPUT_HANDLE);	//创建光标的句柄
+                    COORD coord = { 0, 0 };								//创建xy坐标结构体，用于设置光标位置
+                    POINT pt = { 0, 0 };								//创建鼠标点坐标变量
+                    SetConsoleCursorInfo(hand, &info);				//设置光标属性
+                    SetConsoleCursorPosition(hand, coord);		//传入光标句柄和坐标设置光标位置
+                    GetCursorPos(&pt);
+                    TrackPopupMenu(hMenu,
+                        TPM_RIGHTBUTTON,
+                        pt.x,pt.y,
+                        0,
+                        hwnd,
+                        nullptr
+                        );
                     return 0;
                 }
                 case WM_RBUTTONDOWN:

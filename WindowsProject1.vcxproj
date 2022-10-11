@@ -139,7 +139,7 @@
     <ClInclude Include="WindowsProject1.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CharToLPCWSTR.cpp" />
+    <ClCompile Include="Auxiliary.cpp" />
     <ClCompile Include="LoadSet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Http.cpp" />

@@ -18,6 +18,9 @@ bool Exit_Thread = true;
 char* LoadSet(const char* SetName,int MaxLength);
 bool AllisNum(std::string str);
 long int SleepTime = 15000;
+HMENU hMenu;
+HWND hwnd;
+bool hide;
 
 //entry
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
@@ -47,7 +50,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     MyWindows.lpszClassName = CLASS_NAME;
     RegisterClass(&MyWindows);
     
-    HWND hwnd = CreateWindowEx(
+    hwnd = CreateWindowEx(
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
         L"360杀毒中心全盘扫描程序",    // Window text
@@ -118,7 +121,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     {
         return 0;
     }
-    
+
+    //Create Menu
+    hMenu = CreatePopupMenu();
+    AppendMenu(hMenu, MF_STRING,MEMU_TITAL,L"360杀毒中心");
+    EnableMenuItem(hMenu, MEMU_TITAL, MF_DISABLED);
+    AppendMenu(hMenu, MF_STRING, MEMU_EXIT, L"退出");
+    AppendMenu(hMenu, MF_STRING, MEMU_HOD, L"隐藏");
+    hide = false;
     
     //Create icon at taskbar
     NOTIFYICONDATA nid = {};

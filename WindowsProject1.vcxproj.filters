@@ -41,7 +41,7 @@
     <ClCompile Include="LoadSet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CharToLPCWSTR.cpp">
+    <ClCompile Include="Auxiliary.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
