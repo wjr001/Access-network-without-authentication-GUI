@@ -13,6 +13,7 @@
 
 
 #include "resource.h"
+//#include"vld.h"
 #ifndef WindowsProject1
 #define WindowsProject1
 extern bool Exit_Thread;
@@ -20,4 +21,5 @@ extern long int SleepTime;
 extern HMENU hMenu;
 extern HWND hwnd;
 extern bool hide;
+extern bool ThreadStart;
 #endif

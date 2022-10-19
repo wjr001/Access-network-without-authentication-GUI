@@ -12,6 +12,7 @@ DWORD WINAPI send_req(LPVOID lpParam);
 LPCWSTR CharToLPCWSTR(char* input);
 
 bool ThreadStart = false;
+bool stopThreadExe = false;
 DWORD dwThread;
 HANDLE hThread;
 
@@ -27,7 +28,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if (!ThreadStart)
                     {
-                        CreateThread(
+                        MessageBox(NULL, L"’˝‘⁄∆Ù∂Ø…®√Ë", L"«Î…‘∫Û", MB_OK);
+                        hThread = CreateThread(
                             NULL,                   // default security attributes
                             0,                      // use default stack size  
                             send_req,       // thread function name
@@ -36,22 +38,22 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             &dwThread);
                         Exit_Thread = false;
                         ThreadStart = true;
+                        stopThreadExe = false;
                     }
                     else
                     {
-                        MessageBox(hwnd, L"…®√Ë“—∆Ù∂Ø", L"«Î◊¢“‚!", MB_OK);
+                        MessageBox(hwnd, L"«Îµ»¥˝…®√ËÕ£÷π", L"«Î◊¢“‚!", MB_OK);
                     }
                     return 0;
                 }
                 case BUT_STOP: 
-                {
-                    if (ThreadStart)
+                {                    
+                    if (ThreadStart && !stopThreadExe)
                     {
                         Exit_Thread = true;
-                        WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
                         CloseHandle(hThread);
-                        ThreadStart = false;
                     }
+                    stopThreadExe = true;
                     return 0;
                 }
                 case BUT_HIDEWINDOW:
@@ -64,6 +66,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
                 case MEMU_EXIT:
                 {
+                    if (ThreadStart && !stopThreadExe)
+                    {
+                        Exit_Thread = true;
+                        CloseHandle(hThread);
+                    }
                     PostQuitMessage(0);
                     return 0;
                 }
@@ -88,10 +95,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         case WM_DESTROY:
         {
-            if (ThreadStart)
+            if (ThreadStart && !stopThreadExe)
             {
                 Exit_Thread = true;
-                WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
                 CloseHandle(hThread);
             }
             PostQuitMessage(0);

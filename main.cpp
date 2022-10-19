@@ -29,7 +29,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
     //Load Setting
-    char* SleepTimeChar = LoadSet("SleepTime",17);
+    char* SleepTimeChar = LoadSet("SleepTime", 17);
     if ((AllisNum(SleepTimeChar) == true))
     {
         std::stringstream chartoint;
@@ -41,7 +41,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         MessageBox(NULL, L"参数 SleepTime 需要全部为数字", L"警告", MB_OK);
         exit(0);
     }
-
     //Registration Form
     WNDCLASS MyWindows = { };
     const wchar_t CLASS_NAME[] = L"Sample Window Class";
@@ -127,8 +126,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     hMenu = CreatePopupMenu();
     AppendMenu(hMenu, MF_STRING,MEMU_TITAL,L"360杀毒中心");
     EnableMenuItem(hMenu, MEMU_TITAL, MF_DISABLED);
-    AppendMenu(hMenu, MF_STRING, MEMU_EXIT, L"退出");
     AppendMenu(hMenu, MF_STRING, MEMU_HOD, L"隐藏");
+    AppendMenu(hMenu, MF_STRING, MEMU_EXIT, L"退出");
     hide = false;
     
     //Create icon at taskbar
