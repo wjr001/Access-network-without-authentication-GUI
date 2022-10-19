@@ -11,6 +11,7 @@ using namespace std;
 
 bool HttpGetReq()
 {
+    
     ofstream erro_log;
     erro_log.open("erro.log", ios::out);
     //1.初始化套接字库
@@ -20,9 +21,10 @@ bool HttpGetReq()
     if (flag_init_socket != 0)
     {
         erro_log << "初始化套接字失败" << endl;
+        WSACleanup();
         return false;
     }
-
+    
     //2.连接socket
     //AF_INET 指的是IPV4协议 //sock_stream 是有保障的(即能保证数据正确传送到对方)面向连接的SOCKET与tcp协议相对应
     //IPPROTO_TCP:传输层采用的协议类型
@@ -35,6 +37,8 @@ bool HttpGetReq()
     if (host_info == nullptr)
     {
         erro_log << "该主机url失败！" << endl;
+        closesocket(m_socket);
+        WSACleanup();
         return false;
     }
 
@@ -51,6 +55,8 @@ bool HttpGetReq()
     if (flag_connect_socket != 0)
     {
         erro_log << "connect to server fail!" << endl;
+        closesocket(m_socket);
+        WSACleanup();
         return false;
     }
 
@@ -60,6 +66,7 @@ bool HttpGetReq()
     //const char* total_req_header = "Host:www.baidu.com\r\nConnection: close\r\n\r\n";
     //const char* all_req_header = "GET /index.php?a=a&b=b HTTP/1.1\r\nHost:192.168.31.220\r\nConnection: close\r\n\r\n";
     const char* all_req_header = "GET /ac_portal/get_auth_url?auth_type=dingtalk&ttype=mobile HTTP/1.1\r\nHost: 192.168.180.1\r\nUser-Agent: Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 (KHTML, like Gecko) \r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8\r\nAccept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n\r\n";
+    
     if (send(m_socket, all_req_header, strlen(all_req_header), 0) > 0)
     {
         //5.接收服务器响应的数据
@@ -78,6 +85,7 @@ bool HttpGetReq()
                 i += 1;
             }
             temp.close();
+            free(recvBuffer);
             break;
         }
 
@@ -92,6 +100,7 @@ bool HttpGetReq()
     //6.关闭连接
     closesocket(m_socket);
     WSACleanup();
+    
     return true;
 }
 
@@ -102,5 +111,7 @@ DWORD WINAPI send_req(LPVOID lpParam)
         HttpGetReq();
         Sleep(SleepTime);
     }
+    ThreadStart = false;
+    SetWindowText(hwndStatic, L"就绪");
     return 0;
 }

@@ -12,14 +12,14 @@ LPCWSTR CharToLPCWSTR(char* input);
 
 char* LoadSet(const char* SetName , int MaxLength)
 {
-    char* value = (char*)malloc(MaxLength);
+    char value[1024];
     ifstream setfile;
     char* output = (char*)malloc(128);
     setfile.open("conf.ini", ios::in);
     if (!setfile.is_open())
     {
         setfile.close();
-        MessageBox(NULL,L"配置文件加载失败",L"警告",MB_OK);
+        MessageBox(NULL,L"配置文件加载失败",L"警告",MB_OK | MB_ICONHAND);
         exit(0);
     }
     string nowsettemp;
@@ -37,7 +37,8 @@ char* LoadSet(const char* SetName , int MaxLength)
     {
         setfile.close();
         sprintf_s(output, 128, "找不到参数 %s", SetName);
-        MessageBox(NULL, CharToLPCWSTR(output), L"警告", MB_OK);
+        MessageBox(NULL, CharToLPCWSTR(output), L"警告", MB_OK | MB_ICONHAND);
+        free(output);
         exit(0);
     }
     else
@@ -47,13 +48,17 @@ char* LoadSet(const char* SetName , int MaxLength)
         if (strlen(nowset) > MaxLength-1)
         {
             sprintf_s(output, 128, "参数 %s 过长，最大值为 %d", SetName,MaxLength-1);
-            MessageBox(NULL, CharToLPCWSTR(output), L"警告", MB_OK);
+            MessageBox(NULL, CharToLPCWSTR(output), L"警告", MB_OK | MB_ICONHAND);
+            free(output);
+            free(nowset);
             exit(0);
         }
         else
         {
             sprintf_s(value, MaxLength, "%s", nowset);
             setfile.close();
+            free(output);
+            free(nowset);
             return value;
         }
     }

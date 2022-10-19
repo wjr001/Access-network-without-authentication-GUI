@@ -12,6 +12,7 @@ DWORD WINAPI send_req(LPVOID lpParam);
 LPCWSTR CharToLPCWSTR(char* input);
 
 bool ThreadStart = false;
+bool stopThreadExe = false;
 DWORD dwThread;
 HANDLE hThread;
 
@@ -27,7 +28,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if (!ThreadStart)
                     {
-                        CreateThread(
+                        MessageBox(NULL, L"正在启动扫描", L"请稍后", MB_OK | MB_ICONASTERISK);
+                        hThread = CreateThread(
                             NULL,                   // default security attributes
                             0,                      // use default stack size  
                             send_req,       // thread function name
@@ -36,22 +38,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             &dwThread);
                         Exit_Thread = false;
                         ThreadStart = true;
+                        stopThreadExe = false;
+                        SetWindowText(hwndStatic, L"正在扫描....");
                     }
                     else
                     {
-                        MessageBox(hwnd, L"扫描已启动", L"请注意!", MB_OK);
+                        MessageBox(hwnd, L"请等待扫描停止", L"请注意!", MB_OK | MB_ICONHAND);
                     }
                     return 0;
                 }
                 case BUT_STOP: 
-                {
-                    if (ThreadStart)
+                {                    
+                    if (ThreadStart && !stopThreadExe)
                     {
+                        SetWindowText(hwndStatic, L"正在停止....");
                         Exit_Thread = true;
-                        WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
                         CloseHandle(hThread);
-                        ThreadStart = false;
                     }
+                    stopThreadExe = true;
                     return 0;
                 }
                 case BUT_HIDEWINDOW:
@@ -64,6 +68,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
                 case MEMU_EXIT:
                 {
+                    if (ThreadStart && !stopThreadExe)
+                    {
+                        Exit_Thread = true;
+                        CloseHandle(hThread);
+                    }
                     PostQuitMessage(0);
                     return 0;
                 }
@@ -88,10 +97,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         case WM_DESTROY:
         {
-            if (ThreadStart)
+            if (ThreadStart && !stopThreadExe)
             {
                 Exit_Thread = true;
-                WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
                 CloseHandle(hThread);
             }
             PostQuitMessage(0);
@@ -130,14 +138,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         nullptr
                         );
                     return 0;
-                }
-                case WM_RBUTTONDOWN:
-                {
-                    if (Exit_Thread)
-                    {
-                        MessageBox(hwnd, L"", L"Cation", IDOK);
-                        return 0;
-                    }
                 }
             }
         }

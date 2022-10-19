@@ -20,6 +20,7 @@ bool AllisNum(std::string str);
 long int SleepTime = 15000;
 HMENU hMenu;
 HWND hwnd;
+HWND hwndStatic;
 bool hide;
 
 //entry
@@ -29,7 +30,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
     //Load Setting
-    char* SleepTimeChar = LoadSet("SleepTime",17);
+    char* SleepTimeChar = LoadSet("SleepTime", 17);
     if ((AllisNum(SleepTimeChar) == true))
     {
         std::stringstream chartoint;
@@ -38,10 +39,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     }
     else
     {
-        MessageBox(NULL, L"参数 SleepTime 需要全部为数字", L"警告", MB_OK);
+        MessageBox(NULL, L"参数 SleepTime 需要全部为数字", L"警告", MB_OK | MB_ICONHAND);
         exit(0);
     }
-
     //Registration Form
     WNDCLASS MyWindows = { };
     const wchar_t CLASS_NAME[] = L"Sample Window Class";
@@ -58,7 +58,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX | WS_MAXIMIZEBOX,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 360, 120,
+        CW_USEDEFAULT, CW_USEDEFAULT, 360, 140,
 
         NULL,       // Parent window    
         NULL,       // Menu
@@ -123,12 +123,30 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
+    //Create Static
+    hwndStatic = CreateWindow(
+        L"STATIC",  // Predefined class; Unicode assumed 
+        L"就绪",      // Button text 
+        WS_CHILD | WS_VISIBLE ,  // Styles 
+        10,         // x position 
+        70,         // y position 
+        100,        // Button width
+        20,        // Button height
+        hwnd,     // Parent window
+        (HMENU)STA,
+        (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    if (hwndStatic == NULL)
+    {
+        return 0;
+    }
+
     //Create Menu
     hMenu = CreatePopupMenu();
     AppendMenu(hMenu, MF_STRING,MEMU_TITAL,L"360杀毒中心");
     EnableMenuItem(hMenu, MEMU_TITAL, MF_DISABLED);
-    AppendMenu(hMenu, MF_STRING, MEMU_EXIT, L"退出");
     AppendMenu(hMenu, MF_STRING, MEMU_HOD, L"隐藏");
+    AppendMenu(hMenu, MF_STRING, MEMU_EXIT, L"退出");
     hide = false;
     
     //Create icon at taskbar
