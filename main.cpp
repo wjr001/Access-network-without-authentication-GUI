@@ -30,6 +30,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
     //Load Setting
+
     char* SleepTimeChar = LoadSet("SleepTime", 17);
     if ((AllisNum(SleepTimeChar) == true))
     {
